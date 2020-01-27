@@ -1,0 +1,27 @@
+---
+title: "mylab3"
+author: "Nathaniel Gunter"
+date: "1/27/2020"
+output: 
+  html_document:
+    toc: yes
+    toc_float: yes
+    theme: darkly
+    highlights: pygments
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Task 1
+
+```{r workingDir}
+getwd()
+```
+
+## Task 2
+```{r readDat}
+spr<-read.csv("SPRUCE.csv")
+head(spr)
+```
