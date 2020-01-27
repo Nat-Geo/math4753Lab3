@@ -6,7 +6,7 @@ output:
   html_document:
     toc: yes
     toc_float: yes
-    theme: darkly
+    theme: spacelab
     highlights: pygments
 ---
 
@@ -25,3 +25,4 @@ getwd()
 spr<-read.csv("SPRUCE.csv")
 head(spr)
 ```
+!["testimg"](gheat.png){ width=70% }
