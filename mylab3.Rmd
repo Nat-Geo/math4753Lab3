@@ -12,6 +12,8 @@ output:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(s20x)
+library(ggplot2)
 ```
 
 ## Task 1
@@ -22,7 +24,98 @@ getwd()
 
 ## Task 2
 ```{r readDat}
-spr<-read.csv("SPRUCE.csv")
-head(spr)
+spruce.df <- read.csv("SPRUCE.csv")
+head(spruce.df)
 ```
-!["testimg"](gheat.png){ width=70% }
+
+## Task 3
+
+```{r spruceScatter}
+with(spruce.df,
+  plot(Height~BHDiameter,bg="Blue",pch=21,cex=1.2, main = "Height vs BHDiameter", ylim=c(0,1.1*max(Height)),xlim=c(0,1.1*max(BHDiameter))))
+```
+
+This plot does not appear at first glance to have a straight-line relationship.
+
+```{r trendScatter}
+with(spruce.df,{layout(matrix(1:3,nr=3))
+  trendscatter(x = BHDiameter,y = Height,f = 0.5)
+  trendscatter(x = BHDiameter,y = Height,f=0.6)
+  trendscatter(x=BHDiameter,y=Height,f=0.7)
+})
+```
+
+```{r makeLinearModel}
+spruce.lm<-with(spruce.df, lm(Height~BHDiameter))
+with(spruce.df,
+  plot(Height~BHDiameter,bg="Blue",pch=21,cex=1.2, main = "Height vs BHDiameter", ylim=c(0,1.1*max(Height)),xlim=c(0,1.1*max(BHDiameter))))
+abline(spruce.lm)
+```
+
+As the lowess smoother plots show, a straight line is not appropriate for this data set. A better fit would likely be more like a $\frac{1}{x}$ relationship.
+
+##Task 4
+
+```{r fourbyfourspread}
+layout(matrix(1:4,nr=2,nc=2,byrow=TRUE))
+layout.show(4)
+with(spruce.df,
+     plot(Height~BHDiameter, bg="Blue",pch=21,cex=1.2,ylim=c(0,1.1*max(Height)),xlim=c(0,1.1*max(BHDiameter))))
+abline(spruce.lm)
+
+yhat=fitted(spruce.lm)
+
+with(spruce.df, plot(Height~BHDiameter, bg = "Blue", pch=21, cex=1.2, ylim = c(0,1.1*max(Height)),xlim=c(0,1.1*max(BHDiameter))))
+with(spruce.df, {
+  segments(BHDiameter, Height, BHDiameter, yhat)
+})
+abline(spruce.lm)
+with(spruce.df,
+     plot(Height~BHDiameter, bg = "Blue", pch=21, cex=1.2, ylim = c(0,1.1*max(Height)),xlim=c(0,1.1*max(BHDiameter))))
+with(spruce.df,abline(h=mean(Height)))     
+with(spruce.df,
+     segments(BHDiameter,mean(Height),BHDiameter,yhat,col="Red"))
+abline(spruce.lm)
+with(spruce.df,
+     plot(Height~BHDiameter, bg = "Blue", pch=21, cex=1.2, ylim = c(0,1.1*max(Height)),xlim=c(0,1.1*max(BHDiameter))))
+with(spruce.df, abline(h=mean(Height)))
+with(spruce.df,segments(BHDiameter, Height, BHDiameter, mean(Height),col="Green"))
+```
+
+```{r ssCalc}
+RSS = with(spruce.df, sum((Height-yhat)^2))
+MSS = with(spruce.df, sum((yhat-mean(Height))^2))
+TSS = with(spruce.df,sum((Height-mean(Height))^2))
+RSS
+MSS
+TSS
+MSS/TSS
+MSS+RSS
+```
+
+The value $\frac{MSS}{TSS}$ represents TODO HERE. TSS does equal MSS+RSS.
+
+## Task 5
+```{r summarizeModel}
+summary(spruce.lm)
+```
+
+The slope has the value 0.48147, and the intercept has the value 9.14684. Therefore, the equation of the line is $y=9.14684+0.48147\times x$.
+
+
+```{r heightPredict}
+predict(spruce.lm, data.frame(BHDiameter=c(15,18,20)))
+```
+
+## Task 6
+
+```{r plotBuild}
+g = ggplot(data=spruce.df,aes(x=BHDiameter,y=Height,colour=BHDiameter))
+g = g+geom_point()+geom_line()+geom_smooth(method="lm")
+g = g+labs(title="Height vs BHDiameter")
+g = g+theme(plot.title = element_text(hjust = 0.5))
+g
+```
+
+## Task 7
+
