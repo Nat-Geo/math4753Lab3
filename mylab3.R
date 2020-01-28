@@ -65,5 +65,9 @@ predict(spruce.lm, data.frame(BHDiameter=c(15,18,20)))
 
 #Task6
 
-ggplot(data=spruce.df)+geom_point(mapping=aes(x=BHDiameter, y=Height))+geom_line(mapping=aes(x=BHDiameter,y=Height))+geom_abline(mapping=aes(intercept = spruce.lm$coefficients["(Intercept)"],slope=spruce.lm$coefficients["BHDiameter"],color = "Blue"
-                                                                                                                                             ))
+g = ggplot(data=spruce.df,aes(x=BHDiameter,y=Height,colour=BHDiameter))
+g = g+geom_point()+geom_line()+geom_smooth(method="lm")
+g = g+labs(title="Height vs BHDiameter")
+g = g+theme(plot.title = element_text(hjust = 0.5))
+g
+
