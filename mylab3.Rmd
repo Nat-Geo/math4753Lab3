@@ -119,3 +119,8 @@ g
 
 ## Task 7
 
+![](points.png){ width=70% }
+
+![](lines.png){ width=70% }
+
+![](regression.png){ width=70% }

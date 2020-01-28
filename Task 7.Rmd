@@ -38,7 +38,7 @@ inputPanel(
   
   
   selectInput("plotg", "Choose plot type",
-      list(`points` = c("g", "gheat", "gratio"),
+      list(`points` = c("g", "gline", "gregression"),
            `point size` = c("gsheat", "gsratio")
       )
     )
@@ -46,25 +46,25 @@ inputPanel(
 
 renderPlot({
   
- g = ggplot(fin.df, aes(x = RATIO, y = HEAT)) + geom_point() 
+ g = ggplot(spruce.df, aes(x = BHDiameter, y = Height)) + geom_point() 
 
- gh = g + geom_point(aes(col = HEAT)) 
+ gl = g + geom_line() 
  
- gr = g + geom_point(aes(col = RATIO)) 
+ gr = g + geom_smooth(method="lm") 
  
- gsh =  g + geom_point(aes(size = HEAT, col = HEAT))
+ gsh =  g + geom_point(aes(size = Height, col = Height))
  
- gsr = g + geom_point(aes(size = RATIO, col = RATIO))
+ gsr = g + geom_point(aes(size = BHDiameter, col = BHDiameter))
   
- if(input$plotg == "g") print(g)
+ if(input$plotg == "g")   print(g)
  
- if(input$plotg == "gheat")   print(gh)
+ if(input$plotg == "gline")   print(gl)
  
  if(input$plotg == "gsratio")   print(gsr)
  
  if(input$plotg == "gsheat")   print(gsh)
  
- if(input$plotg == "gratio")   print(gr)
+ if(input$plotg == "gregression")   print(gr)
  
    
 })
