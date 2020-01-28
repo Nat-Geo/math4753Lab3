@@ -82,7 +82,7 @@ RSS=with(fin.df,sum((HEAT-yhat)^2))
 
 RSS
 
-#make a new plot
+#make a new plotx
 with(fin.df, 
 plot(HEAT~RATIO,bg="Blue",pch=21,ylim=c(0,1.1*max(HEAT)),xlim=c(0,1.1*max(RATIO)))
 )
